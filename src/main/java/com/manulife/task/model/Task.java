@@ -1,9 +1,16 @@
 package com.manulife.task.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 
 @Entity
 @Data

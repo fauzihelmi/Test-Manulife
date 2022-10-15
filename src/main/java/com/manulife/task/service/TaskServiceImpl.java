@@ -1,6 +1,7 @@
 package com.manulife.task.service;
 
 import com.manulife.task.dto.TaskDTO;
+import com.manulife.task.exception.BadRequestException;
 import com.manulife.task.exception.ResourceNotFoundException;
 import com.manulife.task.model.Task;
 import com.manulife.task.payload.request.TaskRequest;
@@ -45,13 +46,13 @@ public class TaskServiceImpl implements TaskService{
     public Task saveTask(TaskRequest taskRequest) {
         List<TaskDTO> taskDTO = taskRepository.getDataByName(taskRequest.getName());
         Task task = new Task();
-        for (TaskDTO data : taskDTO) {
-            if (data == null) {
-                task.setName(taskRequest.getName());
-                task.setDescription(taskRequest.getDescription());
-                task.setStatus(taskRequest.isStatus());
-                taskRepository.save(task);
-            }
+        if (taskDTO.isEmpty()) {
+            task.setName(taskRequest.getName());
+            task.setDescription(taskRequest.getDescription());
+            task.setStatus(taskRequest.isStatus());
+            taskRepository.save(task);
+        } else {
+            throw new BadRequestException(taskRequest.getName(),"Already Exist");
         }
         return task;
     }
